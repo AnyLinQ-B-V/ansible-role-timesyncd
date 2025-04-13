@@ -1,0 +1,33 @@
+---
+galaxy_info:
+  author: Ronny Roethof <ronny@roethof.net>
+  namespace: anylinq
+  role_name: timesyncd
+  description: Ansible role to configure systemd-timesyncd for network time synchronization
+  company: AnyLinQ B.V.
+
+  issue_tracker_url: https://github.com/AnyLinQ-B-V/ansible-role-timesyncd/issues
+
+  license: MIT
+
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm    # Debian 12
+        - trixie      # Debian 13
+    - name: Ubuntu
+      versions:
+        - jammy       # 22.04 LTS
+        - noble       # 24.04 LTS
+
+  galaxy_tags:
+    - systemd
+    - timesyncd
+    - ntp
+    - time
+    - synchronization
+    - system
+
+dependencies: []

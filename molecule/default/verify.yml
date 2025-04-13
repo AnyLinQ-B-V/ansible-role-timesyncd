@@ -1,0 +1,34 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Check if timesyncd config file exists
+      ansible.builtin.stat:
+        path: /etc/systemd/timesyncd.conf
+      register: timesyncd_conf
+
+    - name: Assert timesyncd config file
+      ansible.builtin.assert:
+        that:
+          - timesyncd_conf.stat.exists
+          - timesyncd_conf.stat.mode == '0644'
+          - timesyncd_conf.stat.pw_name == 'root'
+          - timesyncd_conf.stat.gr_name == 'root'
+        fail_msg: "timesyncd configuration file is missing or has incorrect permissions"
+
+    - name: Check if timesyncd is synchronized
+      ansible.builtin.command: timedatectl show --property=NTPSynchronized --value
+      register: ntp_sync
+      changed_when: false
+      failed_when: false
+
+    - name: Assert NTP synchronization
+      ansible.builtin.assert:
+        that:
+          - ntp_sync.stdout == 'yes'
+        fail_msg: "Time synchronization is not active"
+        success_msg: "Time synchronization is working correctly"
